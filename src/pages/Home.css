@@ -1,0 +1,32 @@
+.home-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.feature-card {
+  background: #e0f7fa;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 110px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  font-size: 40px;
+  margin-bottom: 0.5rem;
+}
