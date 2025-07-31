@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/plastic-awareness-platform/static/css/main.7ede4789.css",
+    "main.js": "/plastic-awareness-platform/static/js/main.32dc0fee.js",
+    "static/js/453.9446793b.chunk.js": "/plastic-awareness-platform/static/js/453.9446793b.chunk.js",
+    "index.html": "/plastic-awareness-platform/index.html",
+    "main.7ede4789.css.map": "/plastic-awareness-platform/static/css/main.7ede4789.css.map",
+    "main.32dc0fee.js.map": "/plastic-awareness-platform/static/js/main.32dc0fee.js.map",
+    "453.9446793b.chunk.js.map": "/plastic-awareness-platform/static/js/453.9446793b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7ede4789.css",
+    "static/js/main.32dc0fee.js"
+  ]
+}
