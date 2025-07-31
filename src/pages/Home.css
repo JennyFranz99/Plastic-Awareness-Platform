@@ -3,6 +3,24 @@
   padding: 2rem;
 }
 
+.home-hero h1 {
+  margin-bottom: 0.5rem;
+}
+
+.home-hero p {
+  margin-bottom: 1rem;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #2e3b55;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+
 .features {
   display: flex;
   justify-content: center;
@@ -29,4 +47,28 @@
 .feature-icon {
   font-size: 40px;
   margin-bottom: 0.5rem;
+
+  }
+
+.platform-actions {
+  margin-top: 3rem;
+}
+
+.action-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.action-item {
+  background: #f1f8e9;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 220px;
+}
+
+.action-item h3 {
+  margin-top: 0;
 }

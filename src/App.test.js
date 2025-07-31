@@ -3,12 +3,12 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
-test('renders learn page heading', () => {
+test('renders home page hero', () => {
 render(
     <BrowserRouter>
       <App />
     </BrowserRouter>
   );
-  const headingElement = screen.getByText(/welcome to the plastic pollution awareness platform/i);
+  const headingElement = screen.getByText(/see the truth about plastic/i);
   expect(headingElement).toBeInTheDocument();
 });
