@@ -1,0 +1,17 @@
+[
+  {
+    "question": "Which of the following materials is biodegradable?",
+    "options": ["Plastic", "Glass", "Paper"],
+    "answer": "Paper"
+  },
+  {
+    "question": "What is one way to reduce plastic usage?",
+    "options": ["Using disposable plates", "Using reusable bags", "Buying bottled water"],
+    "answer": "Using reusable bags"
+  },
+  {
+    "question": "Which ocean is most affected by plastic waste?",
+    "options": ["Pacific Ocean", "Arctic Ocean", "Indian Ocean"],
+    "answer": "Pacific Ocean"
+  }
+]
