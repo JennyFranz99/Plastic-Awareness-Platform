@@ -12,9 +12,13 @@ import {
 
 // Open dataset providing plastic waste data.
 // The structure of the returned JSON is expected to be an object whose keys
-// represent years and values represent the metric to be charted.
+// represent years and values represent the metric to be charted. The previous
+// Our World in Data endpoint began returning a 404; the URL below points to a
+// copy of the dataset hosted on GitHub. A small local JSON file is used as a
+// fallback if the remote request fails.
 const DATA_URL =
-  'https://ourworldindata.org/grapher/plastic-waste-generation.json?download-format=data';
+  'https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Plastic%20waste%20generation/Plastic%20waste%20generation.json';
+const FALLBACK_URL = '/plastic-waste-generation.json';
 
 function Dashboard() {
   const [data, setData] = useState([]);
@@ -27,10 +31,19 @@ function Dashboard() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(DATA_URL);
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status}`);
+            let response;
+      try {
+        response = await fetch(DATA_URL);
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status}`);
+        }
+      } catch (remoteErr) {
+        response = await fetch(FALLBACK_URL);
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status}`);
+        }
       }
+      
       const json = await response.json();
 
       // Attempt to normalise the data into an array consumable by Recharts.
