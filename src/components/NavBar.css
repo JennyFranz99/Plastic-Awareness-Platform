@@ -3,12 +3,13 @@
   background-color: #2e3b55;
 }
 
-.nav-home {
+.nav-link {
   color: #fff;
   text-decoration: none;
   font-weight: bold;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  margin-right: 1rem;
 }
 
 .home-icon {

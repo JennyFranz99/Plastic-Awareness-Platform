@@ -1,5 +1,6 @@
 // src/pages/Dashboard.js
 import React, { useCallback, useEffect, useState } from 'react';
+import sampleData from '../data/samplePlasticWaste.json';
 import {
   ResponsiveContainer,
   LineChart,
@@ -18,7 +19,7 @@ import {
 // fallback if the remote request fails.
 const DATA_URL =
   'https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Plastic%20waste%20generation/Plastic%20waste%20generation.json';
-const FALLBACK_URL = '/plastic-waste-generation.json';
+const FALLBACK_URL = process.env.PUBLIC_URL + '/plastic-waste-generation.json';
 
 function Dashboard() {
   const [data, setData] = useState([]);
@@ -43,7 +44,7 @@ function Dashboard() {
           throw new Error(`Network response was not ok: ${response.status}`);
         }
       }
-      
+
       const json = await response.json();
 
       // Attempt to normalise the data into an array consumable by Recharts.
@@ -59,11 +60,19 @@ function Dashboard() {
         }));
       }
       setData(parsed);
-      setLastUpdated(new Date().toLocaleTimeString());
     } catch (err) {
+      // Fallback to bundled sample data when live data fails to load.
+      let parsed = [];
+      if (sampleData.data && typeof sampleData.data === 'object') {
+        parsed = Object.entries(sampleData.data).map(([year, value]) => ({
+          year,
+          value,
+        }));
+      }
+      setData(parsed);
       setError(err.message);
-      setData([]);
     } finally {
+      setLastUpdated(new Date().toLocaleTimeString());
       setLoading(false);
     }
   }, []);
@@ -83,8 +92,7 @@ function Dashboard() {
       </button>
       <p>Last updated: {lastUpdated || '—'}</p>
       {loading && <p>Loading…</p>}
-      {error && <p>Error: {error}</p>}
-      {!loading && !error && data.length > 0 && (
+      {!loading && data.length > 0 && (
         <ResponsiveContainer width="100%" height={400}>
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -94,6 +102,9 @@ function Dashboard() {
             <Line type="monotone" dataKey="value" stroke="#8884d8" />
           </LineChart>
         </ResponsiveContainer>
+      )}
+       {error && (
+        <p>Error loading live data: {error}. Displaying sample data.</p>
       )}
     </div>
   );
