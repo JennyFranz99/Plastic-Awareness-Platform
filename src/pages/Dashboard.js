@@ -20,6 +20,8 @@ function Dashboard() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
+
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -44,6 +46,7 @@ function Dashboard() {
         }));
       }
       setData(parsed);
+      setLastUpdated(new Date().toLocaleTimeString());
     } catch (err) {
       setError(err.message);
       setData([]);
@@ -54,6 +57,8 @@ function Dashboard() {
 
   useEffect(() => {
     loadData();
+    const interval = setInterval(loadData, 60000); // refresh every minute
+    return () => clearInterval(interval);
   }, [loadData]);
 
   return (
@@ -63,6 +68,7 @@ function Dashboard() {
       <button type="button" onClick={loadData} disabled={loading}>
         Refresh
       </button>
+      <p>Last updated: {lastUpdated || '—'}</p>
       {loading && <p>Loading…</p>}
       {error && <p>Error: {error}</p>}
       {!loading && !error && data.length > 0 && (
