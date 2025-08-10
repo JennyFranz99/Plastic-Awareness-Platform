@@ -8,17 +8,16 @@
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "firebase": "^11.10.0",
     "gh-pages": "^6.3.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
     "recharts": "^2.15.4",
-    "web-vitals": "^2.1.4",
-      "react-hook-form": "^7.53.0",
-      "firebase": "^11.0.2"
-    },
-    
+    "web-vitals": "^2.1.4"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
