@@ -12,8 +12,8 @@ const firebaseConfig = {
   projectId: "plastic-awareness-platform",
   storageBucket: "plastic-awareness-platform.firebasestorage.app",
   messagingSenderId: "927568247152",
-  appId: "1:927568247152:web:353494942c7688688177b5",
-  measurementId: "G-8Z56EQJX9H"
+  appId: "1:927568247152:web:e9db1499577ee6308177b5",
+  measurementId: "G-81EHSG3ZXE"
 };
 
 // Initialize Firebase

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
+
 const Feedback = () => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [submitted, setSubmitted] = useState(false);
