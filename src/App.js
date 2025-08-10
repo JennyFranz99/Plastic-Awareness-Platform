@@ -1,9 +1,4 @@
 // src/App.js
-import { useEffect } from 'react';
-import { getAuth, signInAnonymously } from 'firebase/auth';
-import './firebase'; // ensure app is initialized
-const auth = getAuth();
-useEffect(() => { signInAnonymously(auth).catch(console.error); }, []);
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
