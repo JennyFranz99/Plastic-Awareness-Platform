@@ -1,20 +1,28 @@
 // src/pages/Feedback.js
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const Feedback = () => {
-  const [form, setForm] = useState({ name: '', message: '' });
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+   const onSubmit = async (data) => {
+    try {
+      await addDoc(collection(db, 'feedback'), data);
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'feedback_submitted', {
+          event_category: 'engagement',
+        });
+      }
+      setSubmitted(true);
+      reset();
+    } catch (err) {
+      console.error('Error submitting feedback:', err);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Feedback submitted:', form);
-    setSubmitted(true);
-    setForm({ name: '', message: '' });
-  };
 
   return (
     <div>
@@ -22,26 +30,16 @@ const Feedback = () => {
       {submitted ? (
         <p>✅ Thank you for your feedback!</p>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label>Name:</label><br />
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
+                        <input type="text" {...register('name', { required: true })} />
+            {errors.name && <span>Name is required</span>}
           </div>
           <div>
             <label>Message:</label><br />
-            <textarea
-              name="message"
-              value={form.message}
-              onChange={handleChange}
-              required
-              rows="4"
-            />
+           <textarea rows="4" {...register('message', { required: true })} />
+            {errors.message && <span>Message is required</span>}
           </div>
           <button type="submit" style={{ marginTop: '10px' }}>Submit</button>
         </form>
