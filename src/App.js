@@ -7,6 +7,8 @@ import Dashboard from './pages/Dashboard';
 import Learn from './pages/Learn';
 import Quiz from './pages/Quiz';
 import Feedback from './pages/Feedback';
+import Newsletter from './pages/Newsletter';
+import Forum from './pages/Forum';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/learn" element={<Learn />} />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/feedback" element={<Feedback />} />
+        <Route path="/newsletter" element={<Newsletter />} />
+        <Route path="/forum" element={<Forum />} />
       </Routes>
     </>
   );

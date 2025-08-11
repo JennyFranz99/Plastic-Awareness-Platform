@@ -1,0 +1,22 @@
+.newsletter-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.newsletter-container input {
+  padding: 8px;
+  margin-right: 10px;
+}
+
+.newsletter-container button {
+  padding: 8px 16px;
+  background-color: #3a4723;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.newsletter-container span {
+  color: #ffb3b3;
+  font-size: 0.8rem;
+}

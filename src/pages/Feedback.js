@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import './Feedback.css';
+
 
 
 const Feedback = () => {
@@ -26,23 +28,29 @@ const Feedback = () => {
 
 
   return (
-    <div>
-      <h2>Feedback</h2>
+    <div className="feedback-container">
+      <h2 className="feedback-title">Feedback</h2>
       {submitted ? (
         <p>✅ Thank you for your feedback!</p>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="feedback-form">
           <div>
             <label>Name:</label><br />
-                        <input type="text" {...register('name', { required: true })} />
+                                    <input type="text" {...register('name', { required: true })} />
+
             {errors.name && <span>Name is required</span>}
+          </div>
+           <div>
+            <label>Email:</label><br />
+            <input type="email" {...register('email', { required: true })} />
+            {errors.email && <span>Email is required</span>}
           </div>
           <div>
             <label>Message:</label><br />
-           <textarea rows="4" {...register('message', { required: true })} />
+                       <textarea rows="4" {...register('message', { required: true })} />
             {errors.message && <span>Message is required</span>}
           </div>
-          <button type="submit" style={{ marginTop: '10px' }}>Submit</button>
+          <button type="submit">Submit</button>
         </form>
       )}
     </div> 

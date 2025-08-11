@@ -1,0 +1,33 @@
+.forum-container {
+  padding: 20px;
+}
+
+.forum-form input,
+.forum-form textarea {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+  padding: 8px;
+}
+
+.forum-form button {
+  padding: 8px 16px;
+  background-color: #2e3b55;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.forum-posts {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.forum-post {
+  background: #f4f4f4;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}

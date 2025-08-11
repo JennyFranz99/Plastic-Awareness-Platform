@@ -1,0 +1,52 @@
+.feedback-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #2e3b55, #3a4723);
+  color: #fff;
+}
+
+.feedback-title {
+  font-size: 2.5rem;
+  color: #a4de02;
+  text-shadow: 2px 2px 0 #000, 4px 4px 0 #444;
+  animation: wobble 3s infinite;
+  transform: perspective(500px) rotateX(10deg);
+  margin-bottom: 20px;
+}
+
+@keyframes wobble {
+  0%, 100% {
+    transform: perspective(500px) rotateX(10deg) rotateZ(-2deg);
+  }
+  50% {
+    transform: perspective(500px) rotateX(10deg) rotateZ(2deg);
+  }
+}
+
+.feedback-form input,
+.feedback-form textarea {
+  width: 300px;
+  margin-top: 5px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.feedback-form button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #556b2f;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.feedback-form span {
+  color: #ffb3b3;
+  font-size: 0.8rem;
+}
