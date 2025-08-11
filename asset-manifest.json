@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Plastic-Awareness-Platform/static/css/main.d44add54.css",
-    "main.js": "/Plastic-Awareness-Platform/static/js/main.de791bdf.js",
+    "main.css": "/Plastic-Awareness-Platform/static/css/main.ed7c6725.css",
+    "main.js": "/Plastic-Awareness-Platform/static/js/main.4a7fecc7.js",
     "static/js/453.dfd13a70.chunk.js": "/Plastic-Awareness-Platform/static/js/453.dfd13a70.chunk.js",
     "index.html": "/Plastic-Awareness-Platform/index.html",
-    "main.d44add54.css.map": "/Plastic-Awareness-Platform/static/css/main.d44add54.css.map",
-    "main.de791bdf.js.map": "/Plastic-Awareness-Platform/static/js/main.de791bdf.js.map",
+    "main.ed7c6725.css.map": "/Plastic-Awareness-Platform/static/css/main.ed7c6725.css.map",
+    "main.4a7fecc7.js.map": "/Plastic-Awareness-Platform/static/js/main.4a7fecc7.js.map",
     "453.dfd13a70.chunk.js.map": "/Plastic-Awareness-Platform/static/js/453.dfd13a70.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d44add54.css",
-    "static/js/main.de791bdf.js"
+    "static/css/main.ed7c6725.css",
+    "static/js/main.4a7fecc7.js"
   ]
 }
