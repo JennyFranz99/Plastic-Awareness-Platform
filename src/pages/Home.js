@@ -9,22 +9,22 @@ const features = [
 {
     path: '/dashboard',
     label: 'Dashboard',
-    icon: 'https://img.icons8.com/3d-fluency/94/plastic-bottle.png',
+    icon: 'https://img.icons8.com/?size=100&id=I78lT9Mk9Qg1&format=png&color=000000',
   },
   {
     path: '/learn',
     label: 'Learn',
-    icon: 'https://img.icons8.com/3d-fluency/94/recycle-bin.png',
+    icon: 'https://img.icons8.com/?size=100&id=46939&format=png&color=000000',
   },
   {
     path: '/quiz',
     label: 'Quiz',
-    icon: 'https://img.icons8.com/3d-fluency/94/plastic-cup.png',
+    icon: 'https://cdn-icons-png.flaticon.com/512/1161/1161624.png',
   },
   {
     path: '/feedback',
     label: 'Feedback',
-    icon: 'https://img.icons8.com/3d-fluency/94/trash.png',
+    icon: 'https://img.icons8.com/?size=100&id=re07nkF6LjZq&format=png&color=000000',
   },
 ];
 
