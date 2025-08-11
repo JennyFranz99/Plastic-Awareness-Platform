@@ -3,17 +3,35 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
+// Icons reference external 3D trash images
+
 const features = [
-  { path: '/dashboard', label: 'Dashboard', icon: '🧴' },
-  { path: '/learn', label: 'Learn', icon: '🚮' },
-  { path: '/quiz', label: 'Quiz', icon: '🥤' },
-  { path: '/feedback', label: 'Feedback', icon: '🗑️' },
+{
+    path: '/dashboard',
+    label: 'Dashboard',
+    icon: 'https://img.icons8.com/3d-fluency/94/plastic-bottle.png',
+  },
+  {
+    path: '/learn',
+    label: 'Learn',
+    icon: 'https://img.icons8.com/3d-fluency/94/recycle-bin.png',
+  },
+  {
+    path: '/quiz',
+    label: 'Quiz',
+    icon: 'https://img.icons8.com/3d-fluency/94/plastic-cup.png',
+  },
+  {
+    path: '/feedback',
+    label: 'Feedback',
+    icon: 'https://img.icons8.com/3d-fluency/94/trash.png',
+  },
 ];
 
 const Home = () => (
     <div className="home-container">
     <section className="home-hero">
-      <h1>See the Truth About Plastic</h1>
+      <h1 className="home-title">See the Truth About Plastic</h1>
       <p>
         Explore real-time data on plastic waste, learn how it impacts our
         planet, and discover what you can do to help.
@@ -25,8 +43,12 @@ const Home = () => (
     <div className="features">
       {features.map((feature) => (
         <Link key={feature.path} to={feature.path} className="feature-card">
-          <div className="feature-icon">{feature.icon}</div>
-          <div>{feature.label}</div>
+         <img
+            src={feature.icon}
+            alt={`${feature.label} icon`}
+            className="feature-icon"
+          />
+          <div className="feature-label">{feature.label}</div>
         </Link>
       ))}
     </div>
