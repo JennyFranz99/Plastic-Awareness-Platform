@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Plastic-Awareness-Platform/static/css/main.ed7c6725.css",
-    "main.js": "/Plastic-Awareness-Platform/static/js/main.4a7fecc7.js",
+    "main.js": "/Plastic-Awareness-Platform/static/js/main.42cc9f01.js",
     "static/js/453.dfd13a70.chunk.js": "/Plastic-Awareness-Platform/static/js/453.dfd13a70.chunk.js",
     "index.html": "/Plastic-Awareness-Platform/index.html",
     "main.ed7c6725.css.map": "/Plastic-Awareness-Platform/static/css/main.ed7c6725.css.map",
-    "main.4a7fecc7.js.map": "/Plastic-Awareness-Platform/static/js/main.4a7fecc7.js.map",
+    "main.42cc9f01.js.map": "/Plastic-Awareness-Platform/static/js/main.42cc9f01.js.map",
     "453.dfd13a70.chunk.js.map": "/Plastic-Awareness-Platform/static/js/453.dfd13a70.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ed7c6725.css",
-    "static/js/main.4a7fecc7.js"
+    "static/js/main.42cc9f01.js"
   ]
 }
