@@ -3,12 +3,25 @@ import { Line, Bar } from 'react-chartjs-2';
 import { Chart, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Tooltip, Legend } from 'chart.js';
 import { fetchOwidCsv } from '../services/owid';
 
+
+// pick the first numeric column (skips Entity/Code/Year)
+const firstNumericKey = (row) => {
+  if (!row) return null;
+  const skip = new Set(['Entity','entity','Code','code','Year','year']);
+  for (const k of Object.keys(row)) {
+    if (!skip.has(k) && typeof row[k] === 'number' && !Number.isNaN(row[k])) {
+      return k;
+    }
+  }
+  return null;
+};
+
 Chart.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Tooltip, Legend);
 
 const urls = {
-  production: 'https://ourworldindata.org/grapher/global-plastics-production.csv',
-  mismanaged: 'https://ourworldindata.org/grapher/mismanaged-plastic-waste-global.csv',
-  perCapita:  'https://ourworldindata.org/grapher/plastic-waste-per-capita.csv'
+  production: process.env.PUBLIC_URL + '/data/global-plastics-production.csv',
+  mismanaged: process.env.PUBLIC_URL + '/data/share-of-plastic-waste-that-is-mismanaged.csv',
+  perCapita: process.env.PUBLIC_URL + '/data/plastic-waste-per-capita.csv'
 };
 
 const Card = ({ children }) => (
@@ -53,82 +66,71 @@ export default function Dashboard() {
     return () => { alive = false; };
   }, []);
 
-  // 1) Global production (year → tonnes)
-  const prodData = useMemo(() => {
-    const rows = production.filter(r => r.Entity === 'World' || r.entity === 'World' || !r.Entity && !r.entity); 
-    // OWID varies columns between 'Entity'/'entity' and 'Year'/'year'
-    const years = rows.map(r => r.Year ?? r.year);
-    const tonnes = rows.map(r => r['Global plastics production (tonnes)'] ?? r.tonnes ?? r.value);
-    return {
-      labels: years,
-      datasets: [{
-        label: 'Global plastics production (tonnes)',
-        data: tonnes,
-        tension: 0.3,
-      }]
-    };
-  }, [production]);
+ const prodData = useMemo(() => {
+  const rows = production.filter(r => (r.Entity ?? r.entity) === 'World' || !r.Entity && !r.entity);
+  const years = rows.map(r => r.Year ?? r.year);
+  const col = firstNumericKey(rows[0]);          // <-- auto-pick the value column
+  const tonnes = rows.map(r => (col ? r[col] : null));
+
+  return {
+    labels: years,
+    datasets: [{
+      label: 'Global plastics production (tonnes)',
+      data: tonnes,
+      tension: 0.3,
+    }]
+  };
+}, [production]);
 
   // 2) Global mismanaged share (%)
-  const misData = useMemo(() => {
-    const rows = mismanaged.filter(r => (r.Entity ?? r.entity) === 'World');
-    const years = rows.map(r => r.Year ?? r.year);
-    const share = rows.map(r => r['Share of plastic waste that is mismanaged'] ?? r.value);
-    return {
-      labels: years,
-      datasets: [{
-        label: 'Global mismanaged plastic waste (%)',
-        data: share
-      }]
-    };
-  }, [mismanaged]);
+const misData = useMemo(() => {
+  const rows = mismanaged.filter(r => (r.Entity ?? r.entity) === 'World');
+  const years = rows.map(r => r.Year ?? r.year);
+  const col = firstNumericKey(rows[0]);
+  const share = rows.map(r => (col ? r[col] : null));
+
+  return {
+    labels: years,
+    datasets: [{ label: 'Global mismanaged plastic waste (%)', data: share }]
+  };
+}, [mismanaged]);
 
   // 3) Per-capita plastic waste, country picker
   const countries = useMemo(() => {
-    const set = new Set(perCapita.map(r => r.Entity ?? r.entity).filter(Boolean));
-    return Array.from(set).sort().slice(0, 200);
-  }, [perCapita]);
+  const set = new Set(perCapita.map(r => r.Entity ?? r.entity).filter(Boolean));
+  return Array.from(set).sort().slice(0, 200);
+}, [perCapita]);
 
-    const years = useMemo(() => {
-    const set = new Set(perCapita.map(r => r.Year ?? r.year));
-    return Array.from(set).sort((a, b) => a - b);
-  }, [perCapita]);
+const years = useMemo(() => {
+  const set = new Set(perCapita.map(r => r.Year ?? r.year));
+  return Array.from(set).sort((a,b) => a - b);
+}, [perCapita]);
 
-  useEffect(() => {
-    if (years.length && year === null) {
-      setYear(years[years.length - 1]);
-    }
-  }, [years, year]);
+useEffect(() => {
+  if (years.length && year == null) setYear(years[years.length - 1]);
+}, [years, year]);
 
-  const perCapitaData = useMemo(() => {
-    const rows = perCapita.filter(r => (r.Entity ?? r.entity) === country);
-    const years = rows.map(r => r.Year ?? r.year);
-    const kg = rows.map(r => r['Plastic waste per capita (kg per person per day)'] ?? r.value);
-    return {
-      labels: years,
-      datasets: [{
-        label: `${country}: kg/person/day`,
-        data: kg
-      }]
-    };
-  }, [perCapita, country]);
+const perCapitaData = useMemo(() => {
+  const rows = perCapita.filter(r => (r.Entity ?? r.entity) === country);
+  const labels = rows.map(r => r.Year ?? r.year);
+  const col = firstNumericKey(rows[0]);
+  const values = rows.map(r => (col ? r[col] : null));
 
-    const topPerCapitaData = useMemo(() => {
-    if (!year) return null;
-    const rows = perCapita.filter(r => (r.Year ?? r.year) === year);
-    rows.sort((a, b) => (
-      (b['Plastic waste per capita (kg per person per day)'] ?? b.value) -
-      (a['Plastic waste per capita (kg per person per day)'] ?? a.value)
-    ));
-    const top = rows.slice(0, 10);
-    return {
-      labels: top.map(r => r.Entity ?? r.entity),
-      datasets: [{
-        label: `${year} top 10 kg/person/day`,
-        data: top.map(r => r['Plastic waste per capita (kg per person per day)'] ?? r.value)
-      }]
-    };
-  }, [perCapita, year]);
+  return { labels, datasets: [{ label: `${country}: kg/person/day`, data: values }] };
+}, [perCapita, country]);
+
+const topPerCapitaData = useMemo(() => {
+  if (!year) return null;
+  const col = firstNumericKey(perCapita[0]);
+  const rows = perCapita.filter(r => (r.Year ?? r.year) === year)
+    .sort((a,b) => (b[col] ?? -Infinity) - (a[col] ?? -Infinity))
+    .slice(0, 10);
+  return {
+    labels: rows.map(r => r.Entity ?? r.entity),
+    datasets: [{ label: `${year} top 10 kg/person/day`, data: rows.map(r => r[col]) }]
+  };
+}, [perCapita, year]);
+
 
   if (state === 'loading') return <p style={{padding:'1rem'}}>⏳ Loading live data…</p>;
   if (state === 'error')   return <p style={{padding:'1rem'}}>⚠️ Couldn’t load the dataset. Please refresh.</p>;
