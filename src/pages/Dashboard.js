@@ -28,6 +28,7 @@ export default function Dashboard() {
   const [mismanaged, setMismanaged] = useState([]);
   const [perCapita, setPerCapita] = useState([]);
   const [country, setCountry] = useState('United States'); // default selection
+  const [year, setYear] = useState(null); // latest year once data loads
   const [state, setState] = useState('loading'); // loading | ready | error
   const [ts, setTs] = useState(null);
 
@@ -88,6 +89,17 @@ export default function Dashboard() {
     return Array.from(set).sort().slice(0, 200);
   }, [perCapita]);
 
+    const years = useMemo(() => {
+    const set = new Set(perCapita.map(r => r.Year ?? r.year));
+    return Array.from(set).sort((a, b) => a - b);
+  }, [perCapita]);
+
+  useEffect(() => {
+    if (years.length && year === null) {
+      setYear(years[years.length - 1]);
+    }
+  }, [years, year]);
+
   const perCapitaData = useMemo(() => {
     const rows = perCapita.filter(r => (r.Entity ?? r.entity) === country);
     const years = rows.map(r => r.Year ?? r.year);
@@ -100,6 +112,23 @@ export default function Dashboard() {
       }]
     };
   }, [perCapita, country]);
+
+    const topPerCapitaData = useMemo(() => {
+    if (!year) return null;
+    const rows = perCapita.filter(r => (r.Year ?? r.year) === year);
+    rows.sort((a, b) => (
+      (b['Plastic waste per capita (kg per person per day)'] ?? b.value) -
+      (a['Plastic waste per capita (kg per person per day)'] ?? a.value)
+    ));
+    const top = rows.slice(0, 10);
+    return {
+      labels: top.map(r => r.Entity ?? r.entity),
+      datasets: [{
+        label: `${year} top 10 kg/person/day`,
+        data: top.map(r => r['Plastic waste per capita (kg per person per day)'] ?? r.value)
+      }]
+    };
+  }, [perCapita, year]);
 
   if (state === 'loading') return <p style={{padding:'1rem'}}>⏳ Loading live data…</p>;
   if (state === 'error')   return <p style={{padding:'1rem'}}>⚠️ Couldn’t load the dataset. Please refresh.</p>;
@@ -137,6 +166,29 @@ export default function Dashboard() {
             </select>
           </div>
           <Bar data={perCapitaData} options={{responsive:true, plugins:{legend:{display:true}}, scales:{x:{ticks:{maxRotation:0}}}}} />
+        </Card>
+
+         <Card>
+          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', gap:'1rem'}}>
+            <h3 style={{marginTop:0}}>🏅 Top Per-Capita Plastic Waste</h3>
+            <select
+              value={year ?? ''}
+              onChange={e => setYear(Number(e.target.value))}
+              style={{padding:'.5rem', borderRadius:12, border:'1px solid #ddd'}}
+            >
+              {years.map(y => <option key={y} value={y}>{y}</option>)}
+            </select>
+          </div>
+          {topPerCapitaData && (
+            <Bar
+              data={topPerCapitaData}
+              options={{
+                responsive: true,
+                plugins: { legend: { display: false } },
+                indexAxis: 'y'
+              }}
+            />
+          )}
         </Card>
       </div>
 
