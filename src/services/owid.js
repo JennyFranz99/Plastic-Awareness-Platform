@@ -1,32 +1,61 @@
+// src/services/owid.js
 import Papa from 'papaparse';
 
-const PROXY = 'https://cors.isomorphic-git.org/';
-
-async function fetchText(url) {
-  // primary try
+/**
+ * Fetch a CSV and return rows as objects (header:true)
+ * Has good error messages, optional localStorage cache fallback.
+ */
+export async function fetchOwidCsv(url, { cacheKey } = {}) {
+  // 1) Try network
   try {
-    const r = await fetch(url, { cache: 'no-store' });
-    if (!r.ok) throw new Error(`HTTP ${r.status} on ${url}`);
-    return await r.text();
-  } catch (e) {
-    console.warn('Primary fetch failed, trying proxy:', e.message);
-  }
-  // proxy fallback (handles weird CORS/CDN hiccups)
-  const r2 = await fetch(PROXY + url, { cache: 'no-store' });
-  if (!r2.ok) throw new Error(`HTTP ${r2.status} on ${url} (via proxy)`);
-  return await r2.text();
-}
+    const res = await fetch(url, {
+      headers: { Accept: 'text/csv' },
+      // Important: do NOT set mode: 'no-cors' (it breaks reads)
+      // OWID sends CORS headers so a normal fetch is fine.
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} for ${url}`);
+    }
 
-export async function fetchOwidCsv(url) {
-  const text = await fetchText(url);
-  const parsed = Papa.parse(text, { header: true, dynamicTyping: true });
-  if (parsed.errors?.length) {
-    // Papa rarely throws; surface parsing issues
-    console.warn('CSV parse warnings:', parsed.errors.slice(0, 2));
-  }
-  const data = parsed.data?.filter(Boolean) ?? [];
-  if (!data.length) throw new Error('CSV contained no rows');
-  return data;
+    const text = await res.text();
+    const { data, errors } = Papa.parse(text, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+    });
+    if (errors?.length) {
+      // Papa returns parse warnings as errors array; surface the first one
+      console.warn('CSV parse warnings:', errors.slice(0, 3));
+    }
 
-  
+    // Cache latest successful payload (optional)
+    if (cacheKey) {
+      localStorage.setItem(cacheKey, JSON.stringify({ at: Date.now(), data }));
+    }
+
+    return data;
+  } catch (netErr) {
+    console.error('Network/parse error:', netErr);
+
+    // 2) Try localStorage cache (if any)
+    if (cacheKey) {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        try {
+          const { data } = JSON.parse(cached);
+          console.warn('Using cached dataset for', cacheKey);
+          return data;
+        } catch {}
+      }
+    }
+
+    // 3) Final fallback: ship a small snapshot from /public (optional)
+    // If you include a file like /owid-fallback/global-plastics-production.csv
+    // you could:
+    // const text = await (await fetch('/owid-fallback/global-plastics-production.csv')).text();
+    // const { data } = Papa.parse(text, { header: true, dynamicTyping: true, skipEmptyLines: true });
+    // return data;
+
+    throw netErr; // bubble up if nothing worked
+  }
 }

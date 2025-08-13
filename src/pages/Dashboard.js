@@ -37,16 +37,16 @@ export default function Dashboard() {
     (async () => {
       try {
         const [p, m, pc] = await Promise.all([
-          fetchOwidCsv(urls.production),
-          fetchOwidCsv(urls.mismanaged),
-          fetchOwidCsv(urls.perCapita),
+          fetchOwidCsv(urls.production, { cacheKey: 'owid_production' }),
+          fetchOwidCsv(urls.mismanaged, { cacheKey: 'owid_mismanaged' }),
+          fetchOwidCsv(urls.perCapita,  { cacheKey: 'owid_percapita' }),
         ]);
         if (!alive) return;
         setProduction(p); setMismanaged(m); setPerCapita(pc);
         setTs(new Date());
         setState('ready');
       } catch (e) {
-        console.error(e);
+        console.error('Dashboard load failed:', e);
         if (alive) setState('error');
       }
     })();
