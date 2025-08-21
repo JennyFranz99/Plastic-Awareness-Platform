@@ -1,8 +1,13 @@
 .learn-container {
-  padding: 1rem;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #2e3b55, #3a4723);
+  color: #fff;
 }
 
 .learning-column {
@@ -15,17 +20,30 @@
 }
 
 .stat-card {
-  background: #ffffff;
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
   padding: 1rem;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   text-align: center;
+  transition: transform 0.2s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px) scale(1.05);
 }
 
 .stat-icon {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
+  width: 60px;
+  height: 60px;
+  color: #a4de02;
   margin-bottom: 0.5rem;
+}
+
+.stat-detail {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
 }
