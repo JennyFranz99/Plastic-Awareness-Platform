@@ -18,10 +18,12 @@ const firstNumericKey = (row) => {
 
 Chart.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Tooltip, Legend);
 
+// Our World in Data CSV endpoints for live dashboard data
+const OWID_BASE = 'https://ourworldindata.org/grapher/';
 const urls = {
-  production: process.env.PUBLIC_URL + '/data/global-plastics-production.csv',
-  mismanaged: process.env.PUBLIC_URL + '/data/share-of-plastic-waste-that-is-mismanaged.csv',
-  perCapita: process.env.PUBLIC_URL + '/data/plastic-waste-per-capita.csv'
+ production: `${OWID_BASE}global-plastics-production.csv`,
+ mismanaged: `${OWID_BASE}share-of-plastic-waste-that-is-mismanaged.csv`,
+ perCapita: `${OWID_BASE}plastic-waste-per-capita.csv`,
 };
 
 const Card = ({ children }) => (
